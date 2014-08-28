@@ -21,7 +21,7 @@
     "mocha": ">=1.0.0"
   },
   "dependencies": {
-    "bauer-factory": ">=1.0.7"
+    "bauer-factory": ">=1.0.8"
   },
   "main": "cluster.js"
 }

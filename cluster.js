@@ -15,83 +15,26 @@ var lib = {
 
 // - -------------------------------------------------------------------- - //
 
-function guid() {
-	var uid = "";
-	for (var i = 0; i < 8 ; i++) {
-		uid += Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-	}
-	return uid;
-}
-
-// - -------------------------------------------------------------------- - //
-
-var Response = lib.factory.class({
-	inherits: "events.EventEmitter",
-	constructor: function(worker,id) {
-		this.worker = worker;
-		this.id = id;
-	},
-	send: function(response) {
-		this.worker.send({
-			id: this.id,
-			response: response,
-		});
-	},
-});
-
-// - -------------------------------------------------------------------- - //
-
-var Request = lib.factory.class({
-	inherits: "events.EventEmitter",
-	constructor: function(worker) {
-		this.id = guid();
-		this.worker = worker;
-	},
-	send: function(request) {
-		this.worker.send({
-			id: this.id,
-			request: request,
-		});
-		var wait = function(message) {
-			if (lib.factory.isObject(message) && message.id === this.id) {
-				this.emit("done",message.response);
-				this.worker.removeListener("message",wait);
-			}
-		}.bind(this);
-		this.worker.on("message",wait);
-	},
-	done: {
-		f: function(callback) {
-			this.on("done",callback);
-		},
-	},
-});
-
-// - -------------------------------------------------------------------- - //
-
+// @Worker
 var Worker = lib.factory.class({
 
 	inherits: "events.EventEmitter",
 
+	// new Worker(process,arguments)
 	constructor: function(proc,args) {
 		this.id = proc.pid;
 		this.process = proc;
 		this.args = args;
-
+		this.config = {};
 		this.process.on("message",function(message) {
 			this.emit("message",message);
-			if (lib.factory.isObject(message) && lib.factory.isString(message.id)) {
-				var response = new Response(this,message.id);
-				this.emit("request",message.request,response);
-			}
 		}.bind(this));
-
 		this.process.on("exit",function(code) {
 			this.emit("exit",code);
 		}.bind(this));
-
 	},
 
+	// .require(name)
 	require: function(name) {
 		var module = require(name);
 		if (lib.factory.isFunction(module)) {
@@ -99,6 +42,7 @@ var Worker = lib.factory.class({
 		}
 	},
 
+	// .kill(signal)
 	kill: function(signal) {
 		if (this.process === process) {
 			this.process.exit(signal);
@@ -107,50 +51,48 @@ var Worker = lib.factory.class({
 		}
 	},
 
+	// .send(message)
 	send: function(message) {
 		this.process.send(message);
-	},
-
-	request: {
-
-		0: function() {
-			return new Request(this);
-		},
-
-		1: function(params) {
-			var request = new Request(this);
-			request.send(params);
-			return request;
-		},
-
 	},
 
 });
 
 // - -------------------------------------------------------------------- - //
 
-var cluster = lib.factory.object({
+// @Cluster
+var Cluster = lib.factory.class({
 
 	inherits: "events.EventEmitter",
-
 	constructor: function() {
 		this.isWorker = process.argv[2] == "worker";
 		this.isMaster = !this.isWorker;
 		this.workers = [];
 	},
 
+	// .require(name)
+	require: function(name) {
+		var module = require(name);
+		if (lib.factory.isFunction(module)) {
+			module(this);
+		}
+	},
+
+	// .master(callback)
 	master: {
 		f: function(callback) {
 			this.on("master",callback);
 		},
 	},
 
+	// .worker(callback)
 	worker: {
 		f: function(callback) {
 			this.on("worker",callback);
 		},
 	},
 
+	// .start()
 	start: function() {
 		if (this.isWorker) {
 			var args = process.argv.slice(3);
@@ -161,6 +103,7 @@ var cluster = lib.factory.object({
 		}
 	},
 
+	// .fork(arg0, arg1, ...)
 	fork: function() {
 		var args = ["worker"];
 		var len = arguments.length;
@@ -181,18 +124,23 @@ var cluster = lib.factory.object({
 			});
 			if (index >= 0) {
 				this.workers.splice(index,1);
-				worker.emit("exit");
 			}
 		}.bind(this));
 		this.workers.push(worker);
+		this.emit("fork",worker);
 		return worker;
 	},
-
 
 });
 
 // - -------------------------------------------------------------------- - //
 
-module.exports = cluster;
+exports = new Cluster();
+
+exports.cls = {};
+exports.cls.Worker = Worker;
+exports.cls.Cluster = Cluster;
+
+module.exports = exports;
 
 // - -------------------------------------------------------------------- - //
