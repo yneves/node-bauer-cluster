@@ -1,6 +1,6 @@
 {
   "name": "bauer-cluster",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Just another cluster library.",
   "keywords": ["multi-thread","multi-core","process","fork","multi-process","cluster"],
   "license": "MIT",
