@@ -1,6 +1,6 @@
 {
   "name": "bauer-cluster",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Just another cluster library.",
   "keywords": ["multi-thread","multi-core","process","fork","multi-process","cluster"],
   "license": "MIT",
@@ -21,7 +21,7 @@
     "mocha": ">=1.0.0"
   },
   "dependencies": {
-    "bauer-factory": ">=1.0.8"
+    "bauer-factory": ">=1.1.0"
   },
   "main": "cluster.js"
 }

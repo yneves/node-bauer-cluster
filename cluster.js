@@ -34,6 +34,47 @@ var Worker = lib.factory.class({
 		}.bind(this));
 	},
 
+	defaults: {
+
+		// .defaults(config)
+		o: function(config) {
+			function recurse(source,target) {
+				Object.keys(source).forEach(function(key) {
+					if (lib.factory.isObject(target[key])) {
+						if (lib.factory.isObject(source[key])) {
+							recurse(source[key],target[key]);
+						}
+					} else if (lib.factory.isNull(target[key])) {
+						target[key] = source[key];
+					}
+				});
+			}
+			recurse(config,this.config);
+		},
+
+	},
+
+	configure: {
+
+		// .configure(config)
+		o: function(config) {
+			function recurse(source,target) {
+				Object.keys(source).forEach(function(key) {
+					if (lib.factory.isObject(source[key])) {
+						if (!lib.factory.isObject(target[key])) {
+							target[key] = {};
+						}
+						recurse(source[key],target[key]);
+					} else {
+						target[key] = source[key];
+					}
+				});
+			}
+			recurse(config,this.config);
+		},
+
+	},
+
 	// .require(name)
 	require: function(name) {
 		var module = require(name);
@@ -108,13 +149,13 @@ var Cluster = lib.factory.class({
 		var args = ["worker"];
 		var len = arguments.length;
 		for (var i = 0; i < len; i++) {
-			if (typeof arguments[i] == "string") {
+			if (lib.factory.isString(arguments[i])) {
 				args.push(arguments[i]);
 			}
 		}
 		var file = process.argv[1];
 		var child = lib.cp.fork(file,args);
-		var worker = new Worker(child,args);
+		var worker = new Worker(child,args.slice(1));
 		worker.on("exit",function() {
 			var index = -1;
 			this.workers.forEach(function(w,i) {
