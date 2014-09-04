@@ -95,12 +95,12 @@ Creates a new worker passing the provided arguments. These arguments will be ava
 var worker = cluster.fork("arg0","arg1");
 ```
 
-### .plugin
+### .require
 
-Load a module as a plugin. The module is loaded by ```require``` so it will be relative to ```cwd```. It must export a function which will be called with the ```Cluster``` object as first argument.
+Load a module as a plugin. The module is loaded by ```require``` so it will be relative to ```cwd```. It must export a function which will be called having the ```Cluster``` object as first argument.
 
 ```js
-cluster.plugin("./cluster-plugin.js");
+cluster.require("./cluster-plugin.js");
 ```
 
 ```js
@@ -192,12 +192,12 @@ cluster.worker(function(worker) {
 });
 ```
 
-### .plugin
+### .require
 
-Load a module as a plugin. The module is loaded by ```require``` so it will be relative to ```cwd```. It must export a function which will be called with the ```Worker``` object as first argument.
+Load a module as a plugin. The module is loaded by ```require``` so it will be relative to ```cwd```. It must export a function which will be called having the ```Worker``` object as first argument.
 
 ```js
-worker.plugin("./worker-plugin.js");
+worker.require("./worker-plugin.js");
 ```
 
 ```js
