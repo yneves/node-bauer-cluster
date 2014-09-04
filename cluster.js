@@ -20,8 +20,9 @@ var Worker = lib.factory.class({
 
 	inherits: "events.EventEmitter",
 
-	// new Worker(process,arguments)
-	constructor: function(proc,args) {
+	// new Worker(cluster,process,arguments)
+	constructor: function(cluster,proc,args) {
+		this.cluster = cluster;
 		this.id = proc.pid;
 		this.process = proc;
 		this.args = args;
@@ -137,7 +138,7 @@ var Cluster = lib.factory.class({
 	start: function() {
 		if (this.isWorker) {
 			var args = process.argv.slice(3);
-			var worker = new Worker(process,args);
+			var worker = new Worker(this,process,args);
 			this.emit("worker",worker);
 		} else {
 			this.emit("master");
@@ -155,7 +156,7 @@ var Cluster = lib.factory.class({
 		}
 		var file = process.argv[1];
 		var child = lib.cp.fork(file,args);
-		var worker = new Worker(child,args.slice(1));
+		var worker = new Worker(this,child,args.slice(1));
 		worker.on("exit",function() {
 			var index = -1;
 			this.workers.forEach(function(w,i) {
