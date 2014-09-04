@@ -61,7 +61,7 @@ The `Cluster` class inherits from `EventEmitter`. The following events are avail
 
 ### .master
 
-Attach a listener to the ```master``` event, which is emitted when the cluster is started on the parent process.
+Attaches a listener to the ```master``` event, which is emitted when the cluster is started on the parent process.
 
 ```js
 cluster.master(function() {});
@@ -71,7 +71,7 @@ cluster.on("master",function() {});
 
 ### .worker
 
-Attach a listener to the ```worker``` event, which is emitted when the cluster is started on the child process. Callbacks gets the ```Worker``` object as its first argument.
+Attaches a listener to the ```worker``` event, which is emitted when the cluster is started on the child process. Callbacks gets the ```Worker``` object as its first argument.
 
 ```js
 cluster.worker(function(worker) {});
@@ -93,6 +93,16 @@ Creates a new worker passing the provided arguments. These arguments will be ava
 
 ```js
 var worker = cluster.fork("arg0","arg1");
+```
+
+### .workers
+
+Holds all created `Worker` objects. When fork is called, the `Worker` object is pushed to this list. Once a child process exists, the `Worker` object is removed from this list.
+
+```js
+cluster.workers.forEach(function(worker) {
+  worker.send("hi");
+});
 ```
 
 ### .require
