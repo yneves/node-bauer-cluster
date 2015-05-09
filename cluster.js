@@ -45,7 +45,7 @@ var Worker = lib.factory.class({
 						if (lib.factory.isObject(source[key])) {
 							recurse(source[key],target[key]);
 						}
-					} else if (lib.factory.isNull(target[key])) {
+					} else if (!lib.factory.isDefined(target[key])) {
 						target[key] = source[key];
 					}
 				});

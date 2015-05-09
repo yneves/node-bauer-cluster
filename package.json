@@ -1,8 +1,15 @@
 {
   "name": "bauer-cluster",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Just another cluster library.",
-  "keywords": ["multi-thread","multi-core","process","fork","multi-process","cluster"],
+  "keywords": [
+    "multi-thread",
+    "multi-core",
+    "process",
+    "fork",
+    "multi-process",
+    "cluster"
+  ],
   "license": "MIT",
   "homepage": "https://github.com/yneves/node-bauer-cluster",
   "author": {
@@ -10,7 +17,7 @@
     "url": "http://yneves.com/",
     "email": "npm@yneves.com"
   },
-  "repository":{
+  "repository": {
     "type": "git",
     "url": "https://github.com/yneves/node-bauer-cluster.git"
   },
@@ -21,7 +28,7 @@
     "mocha": ">=1.0.0"
   },
   "dependencies": {
-    "bauer-factory": ">=1.1.0"
+    "bauer-factory": "^1.2.8"
   },
   "main": "cluster.js"
 }
