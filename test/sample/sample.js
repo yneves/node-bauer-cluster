@@ -1,6 +1,8 @@
 // - -------------------------------------------------------------------- - //
 
-var cluster = require("../../");
+var mod = require("../../");
+
+var cluster = new mod.Cluster();
 
 cluster.master(function() {
 

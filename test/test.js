@@ -1,6 +1,8 @@
 // - -------------------------------------------------------------------- - //
 // - libs
 
+"use strict";
+
 var cp = require("child_process");
 var assert = require("assert");
 
@@ -19,8 +21,8 @@ describe("Cluster",function() {
 			error += data.toString("utf8");
 		});
 		proc.on("exit",function() {
-			// assert.equal(error,"");
-			// assert.equal(output,"worker.messagehellomaster.messagehimaster.exit");
+			assert.equal(error,"");
+			assert.equal(output,"worker.messagehellomaster.messagehimaster.exit");
 			done();
 		});
 	});

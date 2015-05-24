@@ -1,6 +1,6 @@
 {
   "name": "bauer-cluster",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "Just another cluster library.",
   "keywords": [
     "multi-thread",
@@ -30,5 +30,5 @@
   "dependencies": {
     "bauer-factory": "^1.2.8"
   },
-  "main": "cluster.js"
+  "main": "lib/index.js"
 }
