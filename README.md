@@ -153,34 +153,6 @@ Array containing the arguments passed to the worker when ```cluster.fork``` is c
 var role = worker.args[0];
 ```
 
-### .config
-
-Object containing custom configurations of the worker. It should be used by plugins to store  configurations.
-
-```js
-var config = worker.config;
-```
-
-### .defaults
-
-Defines the default values of configurations. It changes the `.config` object if the configuration does not exists at the time.
-
-```js
-worker.defaults({
-  timeout: 3000,
-});
-```
-
-### .configure
-
-Defines the values of configurations. It updates the `.config` object with the passed values. Nested objects are merged instead of overwritten.
-
-```js
-worker.configure({
-  timeout: 1000,
-});
-```
-
 ### .send
 
 Sends a message to the other side. The content can be of any type. When the message arrives an ```message``` event will be emitted by the ```Worker``` object. Messages can go both ways.
@@ -229,4 +201,4 @@ worker.kill(signal);
 
 ## License
 
-MIT
+[MIT](./LICENSE)
