@@ -25,12 +25,12 @@ cluster.master(function() {
 cluster.worker(function(worker) {
 
   worker.on("exit",function() {
-    process.stdout.write("worker.exit")
+    process.stdout.write("worker.exit");
     process.stdout.write(message);
   });
 
   worker.on("message",function(message) {
-    process.stdout.write("worker.message")
+    process.stdout.write("worker.message");
     process.stdout.write(message);
     this.send("hi");
   });
