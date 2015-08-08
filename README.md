@@ -60,6 +60,31 @@ myCluster.worker(function(worker) {
 myCluster.start();
 ```
 
+## API Summary
+
+  * `Cluster`
+    * `new Cluster() :Cluster`
+    * `.getWorkerArgsOffset() :Number`
+    * `.require(name String) :void`
+    * `.master(callback Function) :void`
+    * `.worker(callback Function) :void`
+    * `.start() :void`
+    * `.fork(arg0, arg1, ...) :Worker`
+    * `.removeWorker(worker Worker) :void`
+    * `.createWorker(uuid String, args Array) :Worker`
+    * `.createWorker(uuid String, args Array, process Object) :Worker`
+
+
+  * `Worker`
+    * `new Worker(cluster Cluster, uuid String, args Array, process Object) :Worker`
+    * `.setupProcess(proc) :void`
+    * `.require(name String) :void`
+    * `.kill(signal Number) :void`
+    * `.die(reason Number|Error) :void`
+    * `.send(message Object) :void`
+    * `.receive(message Object) :void`
+
+
 ## License
 
 [MIT](./LICENSE)
