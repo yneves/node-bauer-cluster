@@ -14,11 +14,11 @@ cluster.master(function() {
 
   worker.on("message",function(message) {
     process.stdout.write("master.message");
-    process.stdout.write(message);
+    process.stdout.write(message.msg);
     worker.kill();
   });
 
-  worker.send("hello");
+  worker.send({ msg: "hello" });
 
 });
 
@@ -26,13 +26,12 @@ cluster.worker(function(worker) {
 
   worker.on("exit",function() {
     process.stdout.write("worker.exit");
-    process.stdout.write(message);
   });
 
   worker.on("message",function(message) {
     process.stdout.write("worker.message");
-    process.stdout.write(message);
-    this.send("hi");
+    process.stdout.write(message.msg);
+    worker.send({ msg: "hi" });
   });
 
 });
